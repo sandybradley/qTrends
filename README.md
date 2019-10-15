@@ -11,16 +11,16 @@ Start with:
 \l qTrends.q
 
 Load qstudio (http://www.timestored.com/qstudio/) for analysis
-// candles
+# Candles
 select from candleweekly
 ![alt text](Candles.png)
-// MAs
+# Moving averages
 select  time,ma10:mavg[10; close],ma30:mavg[30; close],ma50:mavg[50; close],ma70:mavg[70; close],ma200:mavg[200; close],price:close from candleweekly 
 ![alt text](MAtrends.png)
-// MACD  
+# Moving Average Convergence Divergence (MACD)  
 select  time,macd:(mavg[14;close])-mavg[27;close],  macdsignal:mavg[10;(mavg[14;close])-mavg[27;close]] from candleweekly
 ![alt text](MACD.png)
-// RSI   
+# Relative Strength Index (RSI)   
 mavg1:{a:sum[x#y]%x; b:(x-1)%x; a,a b\(x+1)_y%x};
 calcRsi:{100*rs%1+rs:mavg1[x;y*y>0]%mavg1[x;abs y*(y:y-prev y)<0]};
 select  time,20,80,  rsi:((10#0Nf),calcRsi[10;close])from candleweekly 
