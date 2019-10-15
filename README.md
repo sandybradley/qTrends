@@ -1,10 +1,6 @@
-# QMonitor
+# QTrends
 
-Real-time directional trade volume for bitcoin to fiat markets on Binance, Bitfinex, Bitstamp, Kraken and CoinbasePro, written in KDB+.
-
-Bittrex, Poloniex and Gemini to be included. The focus of this script is to enable real-time monitor of spot trades between bitcoin and fiat currencies. I have used the largest exchanges by 24 hour volume without fake volume reports. 
-
-Real-time logging in the trades table enables real-time signals and triggers. See https://github.com/sandybradley/qSignals.
+Snapshot trend analysis. For use as an overview to guide finer grain market trading.
 
 Pre-requisites:
 
@@ -12,13 +8,24 @@ KDB+ (https://kx.com/connect-with-us/download/)
 
 Start with:
 
-\l qmonitor.q
+\l qTrends.q
 
-View trades table
+Load qstudio (http://www.timestored.com/qstudio/) for analysis
+// candles
+select from candleweekly
+![alt text](Candles.png)
+// MAs
+select  time,ma10:mavg[10; close],ma30:mavg[30; close],ma50:mavg[50; close],ma70:mavg[70; close],ma200:mavg[200; close],price:close from candleweekly 
+![alt text](MAtrends.png)
+// MACD  
+select  time,macd:(mavg[14;close])-mavg[27;close],  macdsignal:mavg[10;(mavg[14;close])-mavg[27;close]] from candleweekly
+![alt text](MACD.png)
+// RSI   
+mavg1:{a:sum[x#y]%x; b:(x-1)%x; a,a b\(x+1)_y%x};
+calcRsi:{100*rs%1+rs:mavg1[x;y*y>0]%mavg1[x;abs y*(y:y-prev y)<0]};
+select  time,20,80,  rsi:((10#0Nf),calcRsi[10;close])from candleweekly 
+![alt text](RSI.png)
 
-http://localhost:5010/
-
-WARNING - live trade monitoring consumes alot of bandwidth and logging takes alot of storage. Please monitor and adjust accordingly.
 
 # Karma jar
 
