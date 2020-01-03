@@ -27,7 +27,7 @@ select  time,20,80,  rsi:((10#0Nf),calcRsi[10;close])from candleweekly
 ![alt text](RSI.png)
 
 
-# Karma jar
+# Karma Jar
 
 BTC - 112eMCQJUkUz7kvxDSFCGf1nnFJZ61CE4W
 
